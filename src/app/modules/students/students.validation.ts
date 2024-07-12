@@ -19,7 +19,7 @@ const GuardianValidationSchema = z.object({
 });
 
 // Define Zod schema for TPayment
-const PaymentSchema = z.object({
+const PaymentValidationSchema = z.object({
   month: z.string().nonempty(),
   paidAmount: z.number().positive(),
   dueAmount: z.number().optional(),
@@ -28,32 +28,36 @@ const PaymentSchema = z.object({
 });
 
 // Define Zod schema for TStudent
-const StudentValidationSchema = z.object({
-  id: z.string().nonempty(),
-  name: z.object({
-    firstName: z.string().nonempty(),
-    middleName: z.string().optional(),
-    lastName: z.string().nonempty(),
+const createStudentValidationSchema = z.object({
+  body: z.object({
+    studentData: z.object({
+      name: z.object({
+        firstName: z.string().nonempty(),
+        middleName: z.string().optional(),
+        lastName: z.string().nonempty(),
+      }),
+      gender: z.string().nonempty(),
+      dateOfBirth: z.string().nonempty(),
+      email: z.string().email().optional(),
+      contactNo: z.string().nonempty(),
+      emergencyContactNo: z.string().nonempty(),
+      presentAddress: z.string().nonempty(),
+      permanentAddress: z.string().nonempty(),
+      guardian: GuardianValidationSchema,
+      profileImage: z.string().nonempty(),
+      school: SchoolCollageValidationSchema,
+      collage: SchoolCollageValidationSchema.optional(),
+      class: z.string().nonempty(),
+      payment: z.object({
+        name: z.string().nonempty(),
+        id: z.string().nonempty(),
+        tutionFee: z.number().positive(),
+        paymentInfo: z.array(PaymentValidationSchema),
+      }),
+    }),
   }),
-  gender: z.string().nonempty(),
-  dateOfBirth: z.string().nonempty(),
-  email: z.string().email().optional(),
-  contactNo: z.string().nonempty(),
-  emergencyContactNo: z.string().nonempty(),
-  presentAddress: z.string().nonempty(),
-  permanentAddress: z.string().nonempty(),
-  guardian: GuardianValidationSchema,
-  profileImage: z.string().nonempty(),
-  school: SchoolCollageValidationSchema,
-  collage: SchoolCollageValidationSchema.optional(),
-  class: z.string().nonempty(),
-  payment: z.object({
-    name: z.string().nonempty(),
-    id: z.string().nonempty(),
-    tutionFee: z.number().positive(),
-    paymentInfo: z.array(PaymentSchema),
-  }),
-  isDeleted: z.boolean(),
 });
 
-export default StudentValidationSchema;
+export const StudentValidations = {
+  createStudentValidationSchema,
+};
