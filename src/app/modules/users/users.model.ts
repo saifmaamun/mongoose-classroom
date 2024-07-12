@@ -1,5 +1,7 @@
 import { model, Schema } from "mongoose";
+import bcrypt from "bcrypt";
 import { TUser } from "./users.interface";
+import config from "../../config";
 
 // mongoose schema for user
 const UserSchema = new Schema<TUser>(
@@ -16,14 +18,37 @@ const UserSchema = new Schema<TUser>(
       enum: ["admin", "faculty", "student"],
       required: true,
     },
-    status: { type: String, enum: ["in-progress", "blocked"], required: true },
-    isDeleted: { type: Boolean, required: true },
+    status: {
+      type: String,
+      enum: ["in-progress", "blocked"],
+      required: true,
+      default: "in-progress",
+    },
+    isDeleted: { type: Boolean, default: false },
   },
   // for creation and update time
   {
     timestamps: true,
   }
 );
+
+// to hash the user password
+UserSchema.pre("save", async function (next) {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  const user = this; // doc
+  // hashing password and save into DB
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds)
+  );
+  next();
+});
+
+// set '' after saving password
+UserSchema.post("save", function (doc, next) {
+  doc.password = "";
+  next();
+});
 
 // Create and export the Mongoose model for TUser
 export const UserModel = model<TUser>("User", UserSchema);

@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 import {
+  StudentModel,
   TGuardian,
   TPayment,
   TSchoolCollage,
@@ -35,7 +36,13 @@ const PaymentSchema = new Schema<TPayment>({
 
 // Mongoose schema for TStudent
 const StudentSchema = new Schema<TStudent>({
-  id: { type: String, required: true, unique: true },
+  id: { type: String, required: [true, "ID is required"], unique: true },
+  user: {
+    type: Schema.Types.ObjectId,
+    required: [true, "User ID is required"],
+    unique: true,
+    ref: "User",
+  },
   name: {
     firstName: { type: String, required: true },
     middleName: { type: String },
@@ -62,10 +69,16 @@ const StudentSchema = new Schema<TStudent>({
   },
   isDeleted: {
     type: Boolean,
-    enum: ["in-progress", "blocked"],
     required: true,
   },
 });
 
+//
+//creating a custom static method
+StudentSchema.statics.isUserExists = async function (id: string) {
+  const existingUser = await Student.findOne({ id });
+  return existingUser;
+};
+
 // Create and export the Mongoose model for TStudent
-export const StudentModel = model<TStudent>("Student", StudentSchema);
+export const Student = model<TStudent, StudentModel>("Student", StudentSchema);

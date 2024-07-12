@@ -1,44 +1,77 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { StudentServices } from "./students.service";
+import sendResponse from "../../utils/sendResponse";
+import httpStatus from "http-status";
 
-const createStudent = async (req: Request, res: Response) => {
+const getAllStudents = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const result = await StudentServices.getAllStudentsFromDB();
   try {
-    const studentData = req.body;
-    const result = await StudentServices.createStudentInToDB(studentData);
-    res.status(200).json({
-      status: true,
-      message: "Student created successfully",
+    // sending response
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Student retrived succesfully",
       data: result,
     });
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (err: any) {
-    res.status(500).json({
-      status: false,
-      message: "Student creation failed",
-      data: err || err.message,
-    });
+  } catch (err) {
+    // handelling the error using global error handler
+    next(err);
   }
 };
 
-const getAllStudents = async (req: Request, res: Response) => {
-  const result = await StudentServices.getAllStudentsFromDB();
+//get single student by id
+const getSingleStudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    res.status(200).json({
-      status: true,
-      message: "Students were successfully retrieved",
+    const { studentId } = req.params;
+    const result = await StudentServices.getSingleStudentFromDB(studentId);
+
+    // sending response
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Student found succesfully",
       data: result,
     });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (err: any) {
-    res.status(500).json({
-      status: false,
-      message: "Students were failed to retrieve",
-      err: err || err.message,
+  } catch (err) {
+    // handelling the error using global error handler
+    next(err);
+  }
+};
+//delete single student by id
+const deleteSingleStudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { studentId } = req.params;
+    const result = await StudentServices.deleteOneStudentFromDB(studentId);
+
+    // sending response
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Student is deleted succesfully",
+      data: result,
     });
+  } catch (err) {
+    // handelling the error using global error handler
+    next(err);
   }
 };
 
 export const StudentControllers = {
-  createStudent,
   getAllStudents,
+  getSingleStudent,
+  deleteSingleStudent,
 };

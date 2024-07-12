@@ -53,7 +53,7 @@ const StudentValidationSchema = z.object({
     tutionFee: z.number().positive(),
     paymentInfo: z.array(PaymentSchema),
   }),
-  isDeleted: z.enum(["in-progress", "blocked"]).optional(),
+  isDeleted: z.boolean(),
 });
 
 export default StudentValidationSchema;

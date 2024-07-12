@@ -1,3 +1,5 @@
+import { Model, Types } from "mongoose";
+
 export type TSchoolCollage = {
   name: string;
   class: string;
@@ -24,9 +26,10 @@ export type TPayment = {
 
 export type TStudent = {
   id: string; // genereated and unique identifier
+  user: Types.ObjectId;
   name: {
     firstName: string;
-    middleName: string;
+    middleName?: string;
     lastName: string;
   };
   gender: string;
@@ -50,3 +53,9 @@ export type TStudent = {
   };
   isDeleted: boolean;
 };
+
+// to check whether the user exists in the database
+export interface StudentModel extends Model<TStudent> {
+  // eslint-disable-next-line no-unused-vars
+  isUserExists(id: string): Promise<TStudent | null>;
+}
