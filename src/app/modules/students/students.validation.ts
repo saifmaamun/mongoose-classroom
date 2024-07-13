@@ -48,6 +48,7 @@ const createStudentValidationSchema = z.object({
       school: SchoolCollageValidationSchema,
       collage: SchoolCollageValidationSchema.optional(),
       class: z.string().nonempty(),
+      admissionSemester: z.string(),
       payment: z.object({
         name: z.string().nonempty(),
         id: z.string().nonempty(),

@@ -6,7 +6,7 @@ import config from "../../config";
 // mongoose schema for user
 const UserSchema = new Schema<TUser>(
   {
-    id: { type: String, required: true },
+    id: { type: String, required: true, unique: true },
     password: { type: String, required: true, minLength: 8 },
     needsPasswordChange: { type: Boolean, default: true },
     bloodGroup: {
