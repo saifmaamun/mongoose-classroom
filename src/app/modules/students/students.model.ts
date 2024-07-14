@@ -60,6 +60,10 @@ const StudentSchema = new Schema<TStudent>({
   school: { type: SchoolCollageSchema, required: true },
   collage: { type: SchoolCollageSchema },
   class: { type: String, required: true },
+  academicDepartment: {
+    type: Schema.Types.ObjectId,
+    ref: "AcademicDepartment",
+  },
   admissionSemester: { type: Schema.ObjectId, ref: "AcademicSemester" },
 
   payment: {

@@ -1,5 +1,5 @@
-import { Schema, model } from 'mongoose';
-import { TAcademicFaculty } from './academicFaculty.interface';
+import { Schema, model } from "mongoose";
+import { TAcademicFaculty } from "./academicFaculty.interface";
 
 const academicFacultySchema = new Schema<TAcademicFaculty>(
   {
@@ -11,10 +11,10 @@ const academicFacultySchema = new Schema<TAcademicFaculty>(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
-export const AcademicFaculty = model<TAcademicFaculty>(
-  'AcademicFaculty',
-  academicFacultySchema,
+export const AcademicFacultyModel = model<TAcademicFaculty>(
+  "AcademicFaculty",
+  academicFacultySchema
 );

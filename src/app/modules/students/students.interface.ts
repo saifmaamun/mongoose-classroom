@@ -44,6 +44,7 @@ export type TStudent = {
   school: TSchoolCollage;
   collage?: TSchoolCollage;
   class: string;
+  academicDepartment: Types.ObjectId;
   admissionSemester: Types.ObjectId;
 
   payment: {
