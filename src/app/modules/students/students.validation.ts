@@ -28,7 +28,7 @@ const PaymentValidationSchema = z.object({
 });
 
 // Define Zod schema for TStudent
-const createStudentValidationSchema = z.object({
+export const createStudentValidationSchema = z.object({
   body: z.object({
     studentData: z.object({
       name: z.object({

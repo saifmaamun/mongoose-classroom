@@ -4,17 +4,29 @@ import AppError from "../../errors/AppError";
 import httpStatus from "http-status";
 import { UserModel } from "../users/users.model";
 import { TStudent } from "./students.interface";
+import QueryBuilder from "../../builder/QueryBuilder";
+import { studentSearchableFields } from "./student.constant";
 
 // get all students
-const getAllStudentsFromDB = async () => {
-  const result = await Student.find()
-    .populate({
-      path: "academicDepartment",
-      populate: {
-        path: "academicFaculty",
-      },
-    })
-    .populate("admissionSemester");
+const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
+  const studentQuery = new QueryBuilder(
+    Student.find()
+      .populate({
+        path: "academicDepartment",
+        populate: {
+          path: "academicFaculty",
+        },
+      })
+      .populate("admissionSemester"),
+    query
+  )
+    .search(studentSearchableFields)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const result = await studentQuery.modelQuery;
   return result;
 };
 
