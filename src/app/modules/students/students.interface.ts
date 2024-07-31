@@ -33,6 +33,7 @@ export type TStudent = {
     lastName: string;
   };
   gender: string;
+
   dateOfBirth: string;
   email?: string;
   contactNo: string;

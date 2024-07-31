@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import { BloodGroup, Gender } from './faculty.constant';
+import { z } from "zod";
+import { BloodGroup, Gender } from "./faculty.constant";
 
 const createUserNameValidationSchema = z.object({
   firstName: z
@@ -7,7 +7,7 @@ const createUserNameValidationSchema = z.object({
     .min(1)
     .max(20)
     .refine((value) => /^[A-Z]/.test(value), {
-      message: 'First Name must start with a capital letter',
+      message: "First Name must start with a capital letter",
     }),
   middleName: z.string(),
   lastName: z.string(),
@@ -15,16 +15,16 @@ const createUserNameValidationSchema = z.object({
 
 export const createFacultyValidationSchema = z.object({
   body: z.object({
-    password: z.string().max(20),
+    password: z.string().max(20).optional(),
     faculty: z.object({
       designation: z.string(),
       name: createUserNameValidationSchema,
-      gender: z.enum([...Gender] as [string, ...string[]]),
+      // gender: z.enum([...Gender] as [string, ...string[]]),
       dateOfBirth: z.string().optional(),
       email: z.string().email(),
       contactNo: z.string(),
       emergencyContactNo: z.string(),
-      bloogGroup: z.enum([...BloodGroup] as [string, ...string[]]),
+      bloogGroup: z.enum([...BloodGroup] as [string, ...string[]]).optional(),
       presentAddress: z.string(),
       permanentAddress: z.string(),
       academicDepartment: z.string(),

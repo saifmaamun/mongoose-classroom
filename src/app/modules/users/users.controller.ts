@@ -34,7 +34,6 @@ const createFaculty = catchAsync(async (req, res) => {
   });
 });
 
-// create admin
 const createAdmin = catchAsync(async (req, res) => {
   const { password, admin: adminData } = req.body;
 

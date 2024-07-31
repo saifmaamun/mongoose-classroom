@@ -49,6 +49,7 @@ const StudentSchema = new Schema<TStudent>({
     lastName: { type: String, required: true },
   },
   gender: { type: String, required: true },
+
   dateOfBirth: { type: String, required: true },
   email: { type: String },
   contactNo: { type: String, required: true },

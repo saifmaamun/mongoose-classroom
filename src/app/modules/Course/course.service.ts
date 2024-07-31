@@ -4,7 +4,7 @@ import QueryBuilder from "../../builder/QueryBuilder";
 import AppError from "../../errors/AppError";
 import { CourseSearchableFields } from "./course.constant";
 import { TCourse, TCoursefaculty } from "./course.interface";
-import { CourseModel, CourseFaculty } from "./course.model";
+import { CourseModel, CourseFacultyModel } from "./course.model";
 
 const createCourseIntoDB = async (payload: TCourse) => {
   const result = await CourseModel.create(payload);
@@ -13,10 +13,11 @@ const createCourseIntoDB = async (payload: TCourse) => {
 
 const getAllCoursesFromDB = async (query: Record<string, unknown>) => {
   const courseQuery = new QueryBuilder(
-    CourseModel.find(),
+    CourseModel.find(), // to populate uncomment the line below and remove the "," after find()
     // .populate('preRequisiteCourses.course'),
     query
   )
+
     .search(CourseSearchableFields)
     .filter()
     .sort()
@@ -133,7 +134,7 @@ const assignFacultiesWithCourseIntoDB = async (
   id: string,
   payload: Partial<TCoursefaculty>
 ) => {
-  const result = await CourseFaculty.findByIdAndUpdate(
+  const result = await CourseFacultyModel.findByIdAndUpdate(
     id,
     {
       course: id,
@@ -151,7 +152,7 @@ const removeFacultiesFromCourseFromDB = async (
   id: string,
   payload: Partial<TCoursefaculty>
 ) => {
-  const result = await CourseFaculty.findByIdAndUpdate(
+  const result = await CourseFacultyModel.findByIdAndUpdate(
     id,
     {
       $pull: { faculties: { $in: payload } },

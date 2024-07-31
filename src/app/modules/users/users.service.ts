@@ -81,7 +81,6 @@ const createStudentInToDB = async (password: string, payload: TStudent) => {
   return user;
 };
 
-// create a single faculty
 const createFacultyInToDB = async (password: string, payload: TFaculty) => {
   // create a user object
   const userData: Partial<TUser> = {};
@@ -138,7 +137,6 @@ const createFacultyInToDB = async (password: string, payload: TFaculty) => {
   }
 };
 
-// create a single admin
 const createAdminInToDB = async (password: string, payload: TFaculty) => {
   // create a user object
   const userData: Partial<TUser> = {};
@@ -184,7 +182,6 @@ const createAdminInToDB = async (password: string, payload: TFaculty) => {
     throw new Error(err);
   }
 };
-
 export const UserServices = {
   createStudentInToDB,
   createFacultyInToDB,
